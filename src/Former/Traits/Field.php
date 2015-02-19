@@ -65,6 +65,10 @@ abstract class Field extends FormerObject implements FieldInterface
 	 */
 	protected $bind;
 
+	protected $wrap = true;
+	protected $autoLabels = true;
+	protected $labelText = '';
+
 	/**
 	 * Get the current framework instance
 	 *
@@ -96,7 +100,7 @@ abstract class Field extends FormerObject implements FieldInterface
 		$this->value = $value;
 		$this->setAttributes($attributes);
 		$this->form = $this->app->bound('former.form') ? $this->app['former.form'] : null;
-
+		$this->autoLabels = $this->app['former']->getOption('automatic_label');
 		// Compute and translate label
 		$this->automaticLabels($name, $label);
 
@@ -130,7 +134,13 @@ abstract class Field extends FormerObject implements FieldInterface
 		if (in_array($method, $translatable) and isset($parameters[0])) {
 			$parameters[0] = Helpers::translate($parameters[0]);
 		}
-
+		
+		$sizes = $this->app['former.framework']->getGroupSizes();
+		if ($sizes && in_array($method, array_keys($sizes)) && count($parameters) == 1) {
+			$cols = array_pop($parameters);
+			$size = $sizes[$method];
+			call_user_func_array(array($this->group, 'addGroupClass'), [$size.$cols]);
+		}
 		// Redirect calls to the Control Group
 		if (method_exists($this->group, $method) or Str::startsWith($method, 'onGroup')) {
 			$method = str_replace('onGroup', '', $method);
@@ -173,7 +183,7 @@ abstract class Field extends FormerObject implements FieldInterface
 	 */
 	public function __toString()
 	{
-		return $this->wrapAndRender();
+		return ''.$this->wrapAndRender();
 	}
 
 	////////////////////////////////////////////////////////////////////
@@ -200,6 +210,7 @@ abstract class Field extends FormerObject implements FieldInterface
 		return
 			($this->form and $this->currentFramework()->is('Nude')) or
 			($this->form and $this->isOfType('inline')) or
+			!$this->wrap() or
 			$this->isButton() or
 			$this->isOfType('hidden') or
 			\Former\Form\Group::$opened or
@@ -224,6 +235,24 @@ abstract class Field extends FormerObject implements FieldInterface
 	public function isButton()
 	{
 		return false;
+	}
+
+	public function wrap()
+	{
+		return $this->wrap;
+	}
+
+	public function noWrap()
+	{
+		$this->wrap = false;
+		return $this;
+	}
+
+	public function autoLabel($on = true)
+	{
+		$this->autoLabels = $on;
+		$this->automaticLabels($this->name, $this->labelText);
+		return $this;
 	}
 
 	/**
@@ -349,6 +378,7 @@ abstract class Field extends FormerObject implements FieldInterface
 		return $this;
 	}
 
+
 	////////////////////////////////////////////////////////////////////
 	//////////////////////////////// HELPERS ///////////////////////////
 	////////////////////////////////////////////////////////////////////
@@ -385,10 +415,10 @@ abstract class Field extends FormerObject implements FieldInterface
 	private function automaticLabels($name, $label)
 	{
 		// Disabled automatic labels
-		if (!$this->app['former']->getOption('automatic_label')) {
+		$this->labelText = $label;
+		if (!$this->autoLabels) {
 			$this->name = $name;
 			$this->label($label);
-
 			return false;
 		}
 
