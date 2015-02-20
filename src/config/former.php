@@ -10,7 +10,7 @@
 	'default_form_type'       => 'horizontal',
 
 	// The framework to be used by Former
-	'framework'               => 'TwitterBootstrap3',
+	'framework'               => 'KekooAdmin',
 
 	// Validation
 	////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@
 	'required_class'          => 'required',
 
 	// A facultative text to append to the labels of required fields
-	'required_text'           => '<sup>*</sup>',
+	'required_text'           => '<small class="text-danger">*</small>',
 
 	// Translations
 	////////////////////////////////////////////////////////////////////

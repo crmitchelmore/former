@@ -2,7 +2,7 @@
 
     // Twitter Bootstrap 3 framework markup
     ////////////////////////////////////////////////////////////////////
-
+    'default_form_type'       => 'vertical',
     // Map Former-supported viewports to Bootstrap 3 equivalents
     'viewports'   => array(
         'large'  => 'lg',

@@ -135,7 +135,7 @@ abstract class Field extends FormerObject implements FieldInterface
 			$parameters[0] = Helpers::translate($parameters[0]);
 		}
 		
-		$sizes = $this->app['former.framework']->getGroupSizes();
+		$sizes = $this->app['former.framework']->getGroupSizes();;
 		if ($sizes && in_array($method, array_keys($sizes)) && count($parameters) == 1) {
 			$cols = array_pop($parameters);
 			$size = $sizes[$method];

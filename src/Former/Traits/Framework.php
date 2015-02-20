@@ -270,7 +270,7 @@ abstract class Framework
 
 		// Append required text
 		if ($field->isRequired()) {
-			$text .= $this->app['former']->getOption('required_text');
+			$text = $this->app['former']->getOption('required_text') . $text;
 		}
 
 		// Render plain label if checkable, else a classic one
@@ -297,7 +297,7 @@ abstract class Framework
 	
 	public function getGroupSizes()
 	{
-		return $this->app['config']->get("former::{$this->current()}.groupSizes");
+		return $this->getFrameworkOption('groupSizes');
 	}
 
 	////////////////////////////////////////////////////////////////////
