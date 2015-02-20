@@ -154,7 +154,7 @@ class Form extends FormerObject
 		static::$opened = false;
 
 		// Add token if necessary
-		$closing = '</form>';
+		$closing = '<input type="submit" class="hidden"></form>';
 		if ($this->method != 'GET') {
 			$closing = $this->app['former']->token().$closing;
 		}
@@ -270,6 +270,14 @@ class Form extends FormerObject
 		}
 
 		return $this->open().$spoof;
+	}
+
+
+	public function faked()
+	{
+		static::$opened = true;
+		$this->open();
+		return true;
 	}
 
 	////////////////////////////////////////////////////////////////////
