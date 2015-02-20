@@ -13,9 +13,15 @@ use Illuminate\Support\Str;
 /**
  * Abstracts general fields parameters (type, value, name) and
  * reforms a correct form field depending on what was asked
+ *
+ * @method static \Former\Traits\Field required()
+ * @method static \Former\Traits\Field min($min_value)
  */
+
 abstract class Field extends FormerObject implements FieldInterface
 {
+
+
 	/**
 	 * The IoC Container
 	 *
@@ -126,6 +132,7 @@ abstract class Field extends FormerObject implements FieldInterface
 	 * Redirect calls to the group if necessary
 	 *
 	 * @param string $method
+     * @return \Former\Traits\Field
 	 */
 	public function __call($method, $parameters)
 	{

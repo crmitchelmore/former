@@ -99,11 +99,11 @@ class MethodDispatcher
 	 */
 	public function toElements($method, $parameters)
 	{
+
 		// Disregards if the method isn't an element
 		if (!method_exists($elements = new Form\Elements($this->app, $this->app['session']), $method)) {
 			return false;
 		}
-
 		return call_user_func_array(array($elements, $method), $parameters);
 	}
 

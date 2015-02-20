@@ -110,7 +110,7 @@ class Former
 	{
 		// Dispatch to Form\Elements
 		if ($element = $this->dispatch->toElements($method, $parameters)) {
-			return $element;
+     		return $element;
 		}
 
 		// Dispatch to Form\Form
@@ -144,13 +144,13 @@ class Former
 		$field     = $this->dispatch->toFields($method, $parameters);
 
 		if ($field instanceof Field) {
-			$field = $framework->getFieldClasses($field, $classes);
+            $field = $framework->getFieldClasses($field, $classes);
 		}
 
 		// Else bind field
 		$this->app->instance('former.field', $field);
 
-		return $this->app['former.field'];
+        return $this->app['former.field'];
 	}
 
 	////////////////////////////////////////////////////////////////////

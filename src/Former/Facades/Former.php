@@ -32,10 +32,18 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Former\Traits\Field week(String $field_name)
  * @method static \Former\Traits\Field datetime(String $field_name)
  * @method static \Former\Traits\Field datetime_local(String $field_name)
+ *
  */
+
 class Former extends Facade
 {
-	/**
+
+    /**
+     * Former facade for the Laravel framework
+     */
+
+
+    /**
 	 * Get the registered component.
 	 *
 	 * @return string
@@ -48,4 +56,8 @@ class Former extends Facade
 
 		return 'former';
 	}
+
+
+
+
 }

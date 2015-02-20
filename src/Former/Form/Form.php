@@ -272,7 +272,6 @@ class Form extends FormerObject
 		return $this->open().$spoof;
 	}
 
-
 	public function faked()
 	{
 		static::$opened = true;
