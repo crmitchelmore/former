@@ -53,7 +53,7 @@ abstract class Checkable extends Field
 	 * @var array
 	 */
 	protected $checked = array();
-
+	protected $valueBasedCheck = false; //True if use value to set which are checked
 	/**
 	 * The checkable currently being focused on
 	 *
@@ -67,6 +67,8 @@ abstract class Checkable extends Field
 	 * @var boolean
 	 */
 	protected $isPushed = null;
+
+	protected $rowClass = '';
 
 	////////////////////////////////////////////////////////////////////
 	//////////////////////////// CORE METHODS //////////////////////////
@@ -123,13 +125,14 @@ abstract class Checkable extends Field
 
 		// Multiple items
 		if ($this->items) {
+			$html = '<div class="row' . $this->rowClass . '">';
 			unset($this->app['former']->labels[array_search($this->name, $this->app['former']->labels)]);
 			foreach ($this->items as $key => $item) {
 				$value = $this->isCheckbox() && !$this->isGrouped() ? 1 : $key;
 				$html .= $this->createCheckable($item, $value);
 			}
 
-			return $html;
+			return $html . '</div>';
 		}
 
 		// Single item
@@ -160,6 +163,12 @@ abstract class Checkable extends Field
 			$this->focus = $on;
 		}
 
+		return $this;
+	}
+
+	public function addRowClass($class)
+	{
+		$this->rowClass .= ' ' . $class;
 		return $this;
 	}
 
@@ -248,6 +257,17 @@ abstract class Checkable extends Field
 			// Only setting a single item
 		} else {
 			$this->checked[$this->name] = (bool) $checked;
+		}
+
+		return $this;
+	}
+
+	public function checkByValue($array = true)
+	{
+
+		if (is_array($array)) {
+			$this->checked = $array;
+			$this->valueBasedCheck = true;
 		}
 
 		return $this;
@@ -462,7 +482,13 @@ abstract class Checkable extends Field
 		if ($this->isCheckbox() or
 			!$this->isCheckbox() and !$this->items
 		) {
-			$checked = array_get($this->checked, $name, false);
+			if ($this->valueBasedCheck) {
+				//If the checking should be based on value
+				$checked = array_get($this->checked, $value, false);
+			} else {
+				$checked = array_get($this->checked, $name, false);
+			}
+
 
 			// If there are multiple, search for the value
 			// as the name are the same between radios

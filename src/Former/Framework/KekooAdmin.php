@@ -238,6 +238,10 @@ class KekooAdmin extends Framework implements FrameworkInterface
             $classes[] = 'form-control';
         }
 
+        if ($field->isOfType('number')) {
+            $classes[] = 'text-right';
+        }
+
         return $this->addClassesToField($field, $classes);
     }
 

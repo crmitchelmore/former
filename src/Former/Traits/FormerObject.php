@@ -1,6 +1,5 @@
 <?php
 namespace Former\Traits;
-
 use Former\Helpers;
 use HtmlObject\Element;
 

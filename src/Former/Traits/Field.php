@@ -10,6 +10,7 @@ use Former\LiveValidation;
 use Illuminate\Container\Container;
 use Illuminate\Support\Str;
 
+
 /**
  * Abstracts general fields parameters (type, value, name) and
  * reforms a correct form field depending on what was asked
@@ -71,7 +72,7 @@ abstract class Field extends FormerObject implements FieldInterface
 	protected $wrap = true;
 	protected $autoLabels = true;
 	protected $labelText = '';
-
+	protected $includeInPostData = false;
 	/**
 	 * Get the current framework instance
 	 *
@@ -144,6 +145,7 @@ abstract class Field extends FormerObject implements FieldInterface
 			$cols = array_pop($parameters);
 			$size = $sizes[$method];
 			call_user_func_array(array($this->group, 'addGroupClass'), [$size.$cols]);
+			return $this;
 		}
 		// Redirect calls to the Control Group
 		if (method_exists($this->group, $method) or Str::startsWith($method, 'onGroup')) {
@@ -176,7 +178,9 @@ abstract class Field extends FormerObject implements FieldInterface
 			$html = $this->currentFramework()->createLabelOf($this);
 			$html .= $this->render();
 		}
-
+		if (isset($this->includeInPostData) && $this->includeInPostData) {
+		 	$html .= $this->app['former']->hidden($this->name)->forceValue($this->value);
+		}
 		return $html;
 	}
 
@@ -259,6 +263,11 @@ abstract class Field extends FormerObject implements FieldInterface
 		return $this;
 	}
 
+	public function includeInPostData()
+	{
+		$this->includeInPostData = true;
+		return $this;
+	}
 	/**
 	 * Get the rules applied to the current field
 	 *

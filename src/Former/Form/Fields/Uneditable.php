@@ -8,7 +8,6 @@ use Former\Traits\Field;
  */
 class Uneditable extends Field
 {
-
 	////////////////////////////////////////////////////////////////////
 	/////////////////////////// CORE METHODS ///////////////////////////
 	////////////////////////////////////////////////////////////////////
@@ -22,8 +21,14 @@ class Uneditable extends Field
 	{
 		$this->addClass($this->app['former.framework']->getUneditableClasses());
 
+		$this->addClass('uneditable');
+
+		$this->readonly();
+
 		$this->setId();
 
 		return $this->app['former.framework']->createDisabledField($this);
 	}
+
+
 }
