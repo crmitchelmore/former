@@ -4,7 +4,7 @@
 	////////////////////////////////////////////////////////////////////
 
 	// Whether labels should be automatically computed from name
-	'automatic_label'         => true,
+
 
 	// The default form type
 	'default_form_type'       => 'vertical',
@@ -42,7 +42,7 @@
 	'required_class'          => 'required',
 
 	// A facultative text to append to the labels of required fields
-	'required_text'           => '<small class="text-danger">*</small>',
+	'required_text'           => '',
 
 	// Translations
 	////////////////////////////////////////////////////////////////////

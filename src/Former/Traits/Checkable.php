@@ -54,6 +54,7 @@ abstract class Checkable extends Field
 	 */
 	protected $checked = array();
 	protected $valueBasedCheck = false; //True if use value to set which are checked
+	protected $checkboxLabelClass = '';
 	/**
 	 * The checkable currently being focused on
 	 *
@@ -125,7 +126,7 @@ abstract class Checkable extends Field
 
 		// Multiple items
 		if ($this->items) {
-			$html = '<div class="row' . $this->rowClass . '">';
+			$html = '<div class="' . $this->rowClass . '">';
 			unset($this->app['former']->labels[array_search($this->name, $this->app['former']->labels)]);
 			foreach ($this->items as $key => $item) {
 				$value = $this->isCheckbox() && !$this->isGrouped() ? 1 : $key;
@@ -273,6 +274,12 @@ abstract class Checkable extends Field
 		return $this;
 	}
 
+	public function addCheckboxLabelClass($class)
+	{
+		$this->checkboxLabelClass .= (' ' . $class);
+		return $this;
+	}
+
 	////////////////////////////////////////////////////////////////////
 	////////////////////////// INTERNAL METHODS ////////////////////////
 	////////////////////////////////////////////////////////////////////
@@ -371,7 +378,7 @@ abstract class Checkable extends Field
 		// In Bootsrap 3, don't append the the checkable type (radio/checkbox) as a class if
 		// rendering inline.
 		$class = $this->app['former']->framework() == 'TwitterBootstrap3' ? trim($isInline) : $this->checkable.$isInline;
-
+		$class .= $this->checkboxLabelClass;
 		// Merge custom attributes with global attributes
 		$attributes = array_merge($this->attributes, $attributes);
 		if (!isset($attributes['id'])) {
