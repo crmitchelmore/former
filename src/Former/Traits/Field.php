@@ -17,6 +17,14 @@ use Illuminate\Support\Str;
  *
  * @method static \Former\Traits\Field required()
  * @method static \Former\Traits\Field min($min_value)
+ * @method \Former\Form\Fields\Checkbox small($columns)
+ * @method \Former\Form\Fields\Checkbox mini($columns)
+ * @method \Former\Form\Fields\Checkbox medium($columns)
+ * @method \Former\Form\Fields\Checkbox large($columns)
+ * @method \Former\Form\Fields\Checkbox class($value)
+ * @method \Former\Form\Fields\Checkbox addClass($value)
+ * @method \Former\Form\Fields\Checkbox readonly()
+ * @method \Former\Form\Fields\Checkbox disabled()
  */
 abstract class Field extends FormerObject implements FieldInterface
 {
@@ -330,7 +338,7 @@ abstract class Field extends FormerObject implements FieldInterface
 	 */
 	public function forceValue($value)
 	{
-		$this->value = $value;
+		$this->value = "" . $value; //Make sure we actually have a string here
 
 		return $this;
 	}
