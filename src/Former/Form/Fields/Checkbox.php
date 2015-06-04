@@ -3,7 +3,7 @@ namespace Former\Form\Fields;
 
 use Former\Traits\Checkable;
 
-/**
+/*
  * My name is Bawksy you see
  */
 class Checkbox extends Checkable
@@ -31,5 +31,11 @@ class Checkbox extends Checkable
 		$this->items(func_get_args());
 
 		return $this;
+	}
+
+	public function render()
+	{
+		$this->addGroupClass('checkbox');
+		return parent::render();
 	}
 }

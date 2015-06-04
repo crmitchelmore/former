@@ -79,6 +79,7 @@ abstract class Field extends FormerObject implements FieldInterface
 
 	protected $wrap = true;
 	protected $autoLabels = true;
+	protected $reverseRender = false;
 	protected $labelText = '';
 	protected $includeInPostData = false;
 	/**
@@ -130,7 +131,6 @@ abstract class Field extends FormerObject implements FieldInterface
 		// Bind the Group class
 		$groupClass = $this->isCheckable() ? 'CheckableGroup' : 'Group';
 		$groupClass = Former::FORMSPACE.$groupClass;
-
 		$this->group = new $groupClass($this->app, $this->label);
 	}
 
@@ -184,7 +184,7 @@ abstract class Field extends FormerObject implements FieldInterface
 			// Classic syntax
 		} else {
 			$html = $this->currentFramework()->createLabelOf($this);
-			$html .= $this->render();
+			$html = $this->reverseRender ?  $this->render() .$html : $html . $this->render();
 		}
 		if (isset($this->includeInPostData) && $this->includeInPostData) {
 		 	$html .= $this->app['former']->hidden($this->name)->forceValue($this->value);
@@ -268,6 +268,13 @@ abstract class Field extends FormerObject implements FieldInterface
 	{
 		$this->autoLabels = $on;
 		$this->automaticLabels($this->name, $this->labelText);
+		return $this;
+	}
+
+	public function reverseRender($reverse = true)
+	{
+		$this->reverseRender = $reverse;
+		$this->group->reverseRender($reverse);
 		return $this;
 	}
 

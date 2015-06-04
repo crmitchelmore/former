@@ -82,6 +82,9 @@ class Group extends Tag
 	 */
 	public static $opened = false;
 
+
+	protected $reverseRender = false;
+
 	////////////////////////////////////////////////////////////////////
 	/////////////////////////// CORE METHODS ///////////////////////////
 	////////////////////////////////////////////////////////////////////
@@ -384,11 +387,23 @@ class Group extends Tag
 	public function wrap($contents, $label = null)
 	{
 		$group = $this->open();
-		$group .= $label;
-		$group .= $this->app['former.framework']->wrapField($contents);
+		if ($this->reverseRender){
+			$group .= $this->app['former.framework']->wrapField($contents);
+			$group .= $label;
+		} else {
+			$group .= $label;
+			$group .= $this->app['former.framework']->wrapField($contents);
+		}
+
 		$group .= $this->close();
 
 		return $group;
+	}
+
+	public function reverseRender($reverse = true)
+	{
+		$this->reverseRender = $reverse;
+		return $this;
 	}
 
 	/**
